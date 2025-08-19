@@ -123,8 +123,9 @@ services:
             - REDIS_CA=${REDIS_CA}
             - REDIS_KEEP_ALIVE=${REDIS_KEEP_ALIVE}
             - ENABLE_BULLMQ_DASHBOARD=${ENABLE_BULLMQ_DASHBOARD}
-        ports:
-            - '${PORT}:${PORT}'
+        # 本機使用
+        # ports:
+        #     - '${PORT}:${PORT}'
         healthcheck:
             test: ['CMD', 'curl', '-f', 'http://localhost:${PORT}/api/v1/ping']
             interval: 10s
@@ -132,5 +133,9 @@ services:
             retries: 5
             start_period: 30s
         volumes:
-            - ~/.flowise:/root/.flowise
+            - /opt/flowise:/root/.flowise
         entrypoint: /bin/sh -c "sleep 3; flowise start"
+
+networks:
+    shared-network:
+        external: true
